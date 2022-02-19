@@ -87,6 +87,6 @@ jobs:
           aws-region: "us-west-2"
   - name: Create new ElasticBeanstalk Application Version for nonprod
     run: |
-          aws --region us-west-2 elasticbeanstalk create-application-version --application-name flasapp --version-label "ver-${{ github.sha }}" --source-bundle S3Bucket=githubactionstestbucket1,S3Key=deploy_package.zip
+          aws --region us-west-2 elasticbeanstalk create-application-version --application-name flasapp --version-label "ver-${{ github.sha }}" --source-bundle S3Bucket=githubactionbucket,S3Key=deploy_package.zip
   - name: Deploy new ElasticBeanstalk Application Version for nonprod
     run: aws --region us-west-2 elasticbeanstalk update-environment --environment-name Flasapp-env --version-label "ver-${{ github.sha }}"
