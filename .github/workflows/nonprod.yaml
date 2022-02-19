@@ -2,7 +2,7 @@ name: Deploying to non prod EB
 on:
  push:
    branches:
-     - feature-*
+     - main
 
 jobs:
  lint:
@@ -72,7 +72,7 @@ jobs:
        name: zipped-bundle
 
   - name: Upload package to S3 bucket
-    run: aws s3 cp deploy_package.zip s3://githubtestbucket/
+    run: aws s3 cp deploy_package.zip s3://githubactionbucket/
 
  deploy:
   runs-on: ubuntu-latest
@@ -86,6 +86,6 @@ jobs:
           aws-region: "us-west-2"
   - name: Create new ElasticBeanstalk Application Version for nonprod
     run: |
-          aws --region ap-south-1 elasticbeanstalk create-application-version --application-name nonprod --version-label "ver-${{ github.sha }}" --source-bundle S3Bucket=githubtestbucket,S3Key=deploy_package.zip
+          aws --region ap-south-1 elasticbeanstalk create-application-version --application-name nonprod --version-label "ver-${{ github.sha }}" --source-bundle S3Bucket=githubactionbucket,S3Key=deploy_package.zip
   - name: Deploy new ElasticBeanstalk Application Version for nonprod
     run: aws --region ap-south-1 elasticbeanstalk update-environment --environment-name Nonprod-env --version-label "ver-${{ github.sha }}"
